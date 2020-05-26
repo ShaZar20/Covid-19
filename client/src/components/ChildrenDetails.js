@@ -1,5 +1,6 @@
 import React from 'react';
 import {IoMdArrowDropdown} from 'react-icons/io';
+import {MdNavigateNext} from 'react-icons/md';
 
 export default class ChildrenDetails extends React.Component {
     constructor(props){
@@ -14,12 +15,17 @@ export default class ChildrenDetails extends React.Component {
             isHanagaSelcted: false,
             shevetSearchRes: "",
             shvatimArrey: ["בזק", "אופק"],
-            searchResultesShvatim: [],
+            searchResultesShvatim: ["בזק", "אופק"],
+            showShvatim: false,
             age: "",
             showAge: false,
             ageArrey: ["ג", "ד", "ה", "ו", "ז", "ח", "ט", "י", "יא", "יב"],
             isAgeSelcted: false,
             nameOfMadrich: "",
+            isShevetSelcted: false,
+            nameOfChild: "",
+            IDNumber: "",
+            errors: {}
         };
     }
     componentDidMount = () => {
@@ -47,13 +53,14 @@ export default class ChildrenDetails extends React.Component {
       };
 
     searchShevet = (text = "" ) =>  {
+      console.log(text);
         if (text === "") {
           return this.setState({ 
-            searchResultesShvatim: [],
-            shvatimSearchRes: ""
+            searchResultesShvatim: this.state.shvatimArrey,
+            shevetSearchRes: ""
           })
         }
-        const resultes = [...this.state.shvatim.filter(shevet => shevet.name.toLowerCase().trim().indexOf(text.toLowerCase().trim()) !== -1)];
+        const resultes = [...this.state.shvatimArrey.filter(name => name.toLowerCase().trim().indexOf(text.toLowerCase().trim()) !== -1)];
         this.setState({
           searchResultesShvatim: resultes,
           shevetSearchRes: text
@@ -72,27 +79,57 @@ export default class ChildrenDetails extends React.Component {
         })
       }
 
-    
+      onNameChange = (text = "") => {
+        this.setState({nameOfChild: text})
+      }
+
+      onIDNumberChange = (text = "") => {
+        this.setState({IDNumber: text})
+      }
+
+      lookForErrors = () => {
+        let errors = {};
+        if(this.state.nameOfChild.split(" ").length < 2 ) {
+          errors.child = true
+        }
+        if(this.state.IDNumber.length != 9 ) {
+          errors.Id = true
+        }
+        if(!this.state.hanagaArrey.includes(this.state.hanagaSearchRes)) {
+          errors.hanaga = true
+        }
+        if(!this.state.shvatimArrey.includes(this.state.shevetSearchRes)){
+          errors.shevet = true
+        }
+        if(this.state.age == "") {
+          errors.age = true
+        }
+        if(this.state.nameOfMadrich.split(" ").length < 2 ) {
+          errors.madrich = true
+        }
+        this.setState({ errors })
+      }
+
     render(){
         return (
             <div className="container-center">
 
-                <button className="back-button"> &lt; אחורה</button>
+                <button className="back-button"> <MdNavigateNext /> אחורה</button>
                 <div className="text-sub-title">פרטי החניך/ה</div>
 
                 <div className="text-paragraph-right">* שם החניך/ה</div>
                 <input 
                     type="text"
-                    //value={}
-                    onChange={this.onNameChange}
+                    value={this.state.nameOfChild}
+                    onChange={(e) => {this.onNameChange(e.target.value)}}
                     placeholder="השם המלא של בנך/בתך"
                 />
 
                 <div className="text-paragraph-right">* מספר ת.ז</div>
                 <input 
                     type="text"
-                    //value={}
-                    onChange={this.onIDNumberChange}
+                    value={this.state.IDNumber}
+                    onChange={(e) => {this.onIDNumberChange(e.target.value)}}
                     placeholder="9 ספרות, נאסף לצורך זיהוי החניך/ה"
                 />
 
@@ -103,7 +140,11 @@ export default class ChildrenDetails extends React.Component {
                       placeholder="בחר/י את ההנהגה"
                       onChange={(e) => { this.searchHanga(e.target.value); }}
                       onFocus={() => this.setState({ showHanaga: true })}
-                      onBlur={() => this.setState({ showHanaga: false })}
+                      onBlur={() => {
+                        setTimeout(() => {
+                          this.setState({ showHanaga: false })
+                        }, 100)
+                      }}
                       value={this.state.hanagaSearchRes}
                   />
                   <IoMdArrowDropdown />
@@ -113,7 +154,7 @@ export default class ChildrenDetails extends React.Component {
                 {this.state.searchResultesHanaga.map((resulte,i ) => 
                   <li 
                   key={i} 
-                  onClick={() => {              
+                  onClick={(e) => {              
                     this.setState({ 
                       isHanagaSelcted: true,
                       hanagaSearchRes: resulte,
@@ -128,30 +169,37 @@ export default class ChildrenDetails extends React.Component {
                 }
 
               <div className="text-paragraph-right">* שבט</div>
-              <div className="container-input">
+              <div className="container-input" style={{background: (this.state.isHanagaSelcted ? "none" : "#E0E0E0")}}>
                 <input 
                     type="text"
                     placeholder="בחר/י את השבט"
                     disabled={!this.state.isHanagaSelcted}
                     onChange={(e) => { this.searchShevet(e.target.value); }}
+                    onFocus={() => this.setState({ showShvatim: true })}
+                      onBlur={() => {
+                        setTimeout(() => {
+                          this.setState({ showShvatim: false })
+                        }, 100)
+                      }}
                     value={this.state.shevetSearchRes}
                 />
                 <IoMdArrowDropdown />
               </div>
-                <ul>
+              {this.state.showShvatim && <ul>
                 {this.state.searchResultesShvatim.map((resulte,i ) => 
                   <li 
                     key={i} 
                     onClick={(e) => {              
                       this.setState({ 
-                        shevetSearchRes: resulte.name,
+                        isShevetSelcted: true,
+                        shevetSearchRes: resulte,
                         searchResultesShvatim: [] 
                       })
                       }}
                   >
-                  {resulte.name}
+                  {resulte}
                   </li>)}   
-              </ul>
+              </ul>}
               
 
               <div className="text-paragraph-right">* שכבה</div>
@@ -161,7 +209,11 @@ export default class ChildrenDetails extends React.Component {
                     placeholder="בחר/י את  השכבה"
                     onChange={(e) => { this.chooseAge(e.target.value); }}
                     onFocus={() => this.setState({ showAge: true })}
-                    onBlur={() => this.setState({ showAge: false })}
+                    onBlur={() => {
+                      setTimeout(() => {
+                        this.setState({ showAge: false })
+                      },100)
+                    }}
                     value={this.state.age}
                 />
                 <IoMdArrowDropdown />
@@ -189,7 +241,19 @@ export default class ChildrenDetails extends React.Component {
                     placeholder="השם המלא"
                 />
 
-                <button className="login-button">מילוי הצהרת בריאות</button>
+                <button 
+                  className="login-button"
+                  disabled={!(this.state.nameOfChild !== "" &&
+                    this.state.IDNumber !== "" &&
+                    this.state.isHanagaSelcted &&
+                    this.state.isShevetSelcted &&
+                    this.state.isAgeSelcted &&
+                    this.state.nameOfMadrich !== ""
+                  )}
+                  onClick={() => this.lookForErrors()}
+                >
+                  מילוי הצהרת בריאות
+                </button>
            
             </div>
         )
