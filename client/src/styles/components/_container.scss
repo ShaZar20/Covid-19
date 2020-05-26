@@ -1,0 +1,60 @@
+.container-fullPage{
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+.container-center{
+    display: flex;
+    width: 90%;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+}
+
+.container-center-right{
+    display: flex;
+    width: 90%;
+    flex-direction: column;
+    margin: auto;
+
+    .text-sub-title{
+        align-self: center;
+    }
+}
+
+.container-checkbox{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow: break-word;
+
+    .text-paragraph-right-bold{
+        padding-right: 0.5rem; 
+        overflow-wrap: break-word;
+        width: 90%;
+        padding-top: 1rem;
+    }
+}
+
+.container-input{
+    display: flex;
+    border: black 1px solid;
+    border-radius: 6px;
+    width: 85%;
+    font-size: 18px;
+    text-align: right;
+    align-items: center;
+    justify-items: center;
+    padding: 0 0.5rem;
+
+    input{
+        border: none;
+    }
+
+    input:disabled{
+        background: none;
+    }
+}
