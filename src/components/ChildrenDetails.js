@@ -119,6 +119,7 @@ export default class ChildrenDetails extends React.Component {
 
                 <div className="text-paragraph-right">* שם החניך/ה</div>
                 <input 
+                    style={{border: (this.state.errors.child ? "#EB5757 1.5px solid" : "")}}
                     type="text"
                     value={this.state.nameOfChild}
                     onChange={(e) => {this.onNameChange(e.target.value)}}
