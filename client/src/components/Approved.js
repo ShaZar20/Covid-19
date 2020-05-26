@@ -22,7 +22,7 @@ export default class Approved extends React.Component {
                 <div className="text-paragraph">ההצהרה נשלחה בהצלחה וניתן להשתתף בפעילות!</div>
                 
                 <FiCheck className="icon-check" />
-                <div>{this.state.date.format("DD/MM/YYYY")}</div>
+                <div>{this.state.date.format("LLLL")}</div>
                 <div className="spacer-column" />
                 <div className="text-paragraph">ניפגש בשבט,</div>
                 <div className="text-paragraph">חזק ואמץ!</div>

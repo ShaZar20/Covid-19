@@ -124,18 +124,24 @@ export default class ChildrenDetails extends React.Component {
                     value={this.state.nameOfChild}
                     onChange={(e) => {this.onNameChange(e.target.value)}}
                     placeholder="השם המלא של בנך/בתך"
+                    
                 />
+                {this.state.errors.child && <div className="error-container">יש להזין את שם החניך/ה</div>}
 
                 <div className="text-paragraph-right">* מספר ת.ז</div>
                 <input 
+                    style={{border: (this.state.errors.Id ? "#EB5757 1.5px solid" : "")}}
                     type="text"
                     value={this.state.IDNumber}
                     onChange={(e) => {this.onIDNumberChange(e.target.value)}}
                     placeholder="9 ספרות, נאסף לצורך זיהוי החניך/ה"
                 />
+                {this.state.errors.Id && <div className="error-container">מספר תעודת הזהות שהזנת לא תקין</div>}
 
                 <div className="text-paragraph-right">* הנהגה</div>
-                <div className="container-input">
+                <div className="container-input"
+                  style={{border: (this.state.errors.hanaga ? "#EB5757 1.5px solid" : "")}}
+                >
                   <input 
                       type="text"
                       placeholder="בחר/י את ההנהגה"
@@ -151,6 +157,7 @@ export default class ChildrenDetails extends React.Component {
                   <IoMdArrowDropdown />
 
                 </div>
+                {this.state.errors.hanaga && <div className="error-container">יש לבחור הנהגה</div>}
                 {this.state.showHanaga && <ul>
                 {this.state.searchResultesHanaga.map((resulte,i ) => 
                   <li 
@@ -170,7 +177,10 @@ export default class ChildrenDetails extends React.Component {
                 }
 
               <div className="text-paragraph-right">* שבט</div>
-              <div className="container-input" style={{background: (this.state.isHanagaSelcted ? "none" : "#E0E0E0")}}>
+              <div className="container-input" 
+                style={{background: (this.state.isHanagaSelcted ? "none" : "#E0E0E0"), 
+                  border: (this.state.errors.shevet ? "#EB5757 1.5px solid" : "")}}
+              >
                 <input 
                     type="text"
                     placeholder="בחר/י את השבט"
@@ -186,6 +196,7 @@ export default class ChildrenDetails extends React.Component {
                 />
                 <IoMdArrowDropdown />
               </div>
+              {this.state.errors.shevet && <div className="error-container">יש לבחור שבט</div>}
               {this.state.showShvatim && <ul>
                 {this.state.searchResultesShvatim.map((resulte,i ) => 
                   <li 
@@ -204,7 +215,9 @@ export default class ChildrenDetails extends React.Component {
               
 
               <div className="text-paragraph-right">* שכבה</div>
-              <div className="container-input">
+              <div className="container-input"
+                style={{border: (this.state.errors.age ? "#EB5757 1.5px solid" : "")}}
+              >
                 <input 
                     type="text"
                     placeholder="בחר/י את  השכבה"
@@ -219,6 +232,7 @@ export default class ChildrenDetails extends React.Component {
                 />
                 <IoMdArrowDropdown />
               </div>
+              {this.state.errors.age && <div className="error-container">יש לבחור שכבה</div>}
               {this.state.showAge && <ul >
                 {this.state.ageArrey.map((resulte,i ) => 
                   <li 
@@ -237,10 +251,12 @@ export default class ChildrenDetails extends React.Component {
               }
                 <div className="text-paragraph-right">* שם המדריך</div>
                 <input 
+                    style={{border: (this.state.errors.madrich ? "#EB5757 1.5px solid" : "")}}
                     type="text"
                     onChange={(e) => {this.setState({ nameOfMadrich: e.target.value })}}
                     placeholder="השם המלא"
                 />
+                {this.state.errors.madrich && <div className="error-container">יש להזין את שם המדריך/ה</div>}
 
                 <button 
                   className="login-button"

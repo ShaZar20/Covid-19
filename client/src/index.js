@@ -13,7 +13,7 @@ ReactDOM.render(
   <React.StrictMode>
     <div className="container-fullPage">
       <Header />
-      <ChildrenDetails />
+      <Approved />
     </div>
   </React.StrictMode>,
   document.getElementById('root')
