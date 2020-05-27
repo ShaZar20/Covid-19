@@ -1,6 +1,9 @@
 import React from 'react';
+import {NavLink} from 'react-router-dom';
 import {IoMdArrowDropdown} from 'react-icons/io';
 import {MdNavigateNext} from 'react-icons/md';
+import _ from 'lodash';
+
 
 export default class ChildrenDetails extends React.Component {
     constructor(props){
@@ -25,7 +28,8 @@ export default class ChildrenDetails extends React.Component {
             isShevetSelcted: false,
             nameOfChild: "",
             IDNumber: "",
-            errors: {}
+            errors: {},
+            data: {nameOfChild: "", IDNumber: "", hanaga: "", shevet: "", age: "", madrich: ""}
         };
     }
     componentDidMount = () => {
@@ -107,6 +111,18 @@ export default class ChildrenDetails extends React.Component {
         if(this.state.nameOfMadrich.split(" ").length < 2 ) {
           errors.madrich = true
         }
+        if(_.isEmpty(errors)){
+          this.setState({
+            data: {
+              nameOfChild: this.state.nameOfChild,
+              IDNumber: this.state.IDNumber,
+              hanaga: this.state.hanagaSearchRes,
+              shevet: this.state.shevetSearchRes,
+              age: this.state.age,
+              madrich: this.state.nameOfMadrich 
+            }
+          })
+        }
         this.setState({ errors })
       }
 
@@ -124,6 +140,7 @@ export default class ChildrenDetails extends React.Component {
                     value={this.state.nameOfChild}
                     onChange={(e) => {this.onNameChange(e.target.value)}}
                     placeholder="השם המלא של בנך/בתך"
+                    onFocus={() => {if(this.state.errors.child) {delete this.state.errors.child }}}
                     
                 />
                 {this.state.errors.child && <div className="error-container">יש להזין את שם החניך/ה</div>}
@@ -135,34 +152,36 @@ export default class ChildrenDetails extends React.Component {
                     value={this.state.IDNumber}
                     onChange={(e) => {this.onIDNumberChange(e.target.value)}}
                     placeholder="9 ספרות, נאסף לצורך זיהוי החניך/ה"
+                    onFocus={() => {if(this.state.errors.Id) {delete this.state.errors.Id }}}
                 />
                 {this.state.errors.Id && <div className="error-container">מספר תעודת הזהות שהזנת לא תקין</div>}
 
                 <div className="text-paragraph-right">* הנהגה</div>
-                <div className="container-input"
+                <label className="container-input"
                   style={{border: (this.state.errors.hanaga ? "#EB5757 1.5px solid" : "")}}
                 >
                   <input 
                       type="text"
                       placeholder="בחר/י את ההנהגה"
                       onChange={(e) => { this.searchHanga(e.target.value); }}
-                      onFocus={() => this.setState({ showHanaga: true })}
+                      onFocus={() => {this.setState({ showHanaga: true }); if(this.state.errors.hanaga) {delete this.state.errors.hanaga };}}
                       onBlur={() => {
                         setTimeout(() => {
                           this.setState({ showHanaga: false })
-                        }, 100)
+                        }, 300)
                       }}
                       value={this.state.hanagaSearchRes}
                   />
                   <IoMdArrowDropdown />
 
-                </div>
+                </label>
                 {this.state.errors.hanaga && <div className="error-container">יש לבחור הנהגה</div>}
                 {this.state.showHanaga && <ul>
                 {this.state.searchResultesHanaga.map((resulte,i ) => 
                   <li 
                   key={i} 
-                  onClick={(e) => {              
+                  onClick={(e) => { 
+                    console.log("ss");             
                     this.setState({ 
                       isHanagaSelcted: true,
                       hanagaSearchRes: resulte,
@@ -177,7 +196,7 @@ export default class ChildrenDetails extends React.Component {
                 }
 
               <div className="text-paragraph-right">* שבט</div>
-              <div className="container-input" 
+              <label className="container-input" 
                 style={{background: (this.state.isHanagaSelcted ? "none" : "#E0E0E0"), 
                   border: (this.state.errors.shevet ? "#EB5757 1.5px solid" : "")}}
               >
@@ -186,16 +205,16 @@ export default class ChildrenDetails extends React.Component {
                     placeholder="בחר/י את השבט"
                     disabled={!this.state.isHanagaSelcted}
                     onChange={(e) => { this.searchShevet(e.target.value); }}
-                    onFocus={() => this.setState({ showShvatim: true })}
+                    onFocus={() => {this.setState({ showShvatim: true }); if(this.state.errors.shevet) {delete this.state.errors.shevet }}}
                       onBlur={() => {
                         setTimeout(() => {
                           this.setState({ showShvatim: false })
-                        }, 100)
+                        }, 300)
                       }}
                     value={this.state.shevetSearchRes}
                 />
                 <IoMdArrowDropdown />
-              </div>
+              </label>
               {this.state.errors.shevet && <div className="error-container">יש לבחור שבט</div>}
               {this.state.showShvatim && <ul>
                 {this.state.searchResultesShvatim.map((resulte,i ) => 
@@ -215,23 +234,23 @@ export default class ChildrenDetails extends React.Component {
               
 
               <div className="text-paragraph-right">* שכבה</div>
-              <div className="container-input"
+              <label className="container-input"
                 style={{border: (this.state.errors.age ? "#EB5757 1.5px solid" : "")}}
               >
                 <input 
                     type="text"
                     placeholder="בחר/י את  השכבה"
                     onChange={(e) => { this.chooseAge(e.target.value); }}
-                    onFocus={() => this.setState({ showAge: true })}
+                    onFocus={() => {this.setState({ showAge: true }); if(this.state.errors.age) {delete this.state.errors.child }}}
                     onBlur={() => {
                       setTimeout(() => {
                         this.setState({ showAge: false })
-                      },100)
+                      },300)
                     }}
                     value={this.state.age}
                 />
                 <IoMdArrowDropdown />
-              </div>
+              </label>
               {this.state.errors.age && <div className="error-container">יש לבחור שכבה</div>}
               {this.state.showAge && <ul >
                 {this.state.ageArrey.map((resulte,i ) => 
@@ -255,6 +274,7 @@ export default class ChildrenDetails extends React.Component {
                     type="text"
                     onChange={(e) => {this.setState({ nameOfMadrich: e.target.value })}}
                     placeholder="השם המלא"
+                    onFocus={() => {if(this.state.errors.madrich) {delete this.state.errors.madrich }}}
                 />
                 {this.state.errors.madrich && <div className="error-container">יש להזין את שם המדריך/ה</div>}
 
@@ -267,7 +287,7 @@ export default class ChildrenDetails extends React.Component {
                     this.state.isAgeSelcted &&
                     this.state.nameOfMadrich !== ""
                   )}
-                  onClick={() => this.lookForErrors()}
+                  onClick={() => {this.lookForErrors() }}
                 >
                   מילוי הצהרת בריאות
                 </button>

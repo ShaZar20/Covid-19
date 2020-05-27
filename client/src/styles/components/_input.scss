@@ -25,5 +25,11 @@ input:disabled{
     height: 1.5rem;
     border: black 1px solid ;
     border-radius: 1px;
+    // content: '✔';
+    // color: white;
 }
 
+.input-checkbox:checked {
+    background-color: rgb(129, 129, 129);
+
+}

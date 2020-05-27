@@ -13,7 +13,7 @@ const WelcomePage = () => (
         ישירות לתיבת הדואר האלקטרוני שלכם/ן
         ותוכולו להציגה למדריך/ה או לשתף
          דרך ה - Whatsapp.</div>
-
+        <div className="spacer-column" />
          <div className="text-paragraph">נתראה בשבט!</div>
 
         <button className="login-button">התחלה</button>

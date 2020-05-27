@@ -14,6 +14,15 @@
     margin: auto;
 }
 
+.container-inCenter{
+    display: flex;
+    width: 90%;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+}
+
 .container-center-right{
     display: flex;
     width: 90%;
@@ -30,6 +39,11 @@
     flex-direction: row;
     width: 100%;
     overflow: break-word;
+
+    .checkmark{
+        content: " ✓",
+        
+    }
 
     .text-paragraph-right-bold{
         padding-right: 0.5rem; 
@@ -56,5 +70,34 @@
 
     input:disabled{
         background: none;
+    }
+}
+.container-approved{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #E0E0E0;
+    border-radius: 5px;
+    border-style: none;
+    width: 90%;
+    font-size: 16px;
+    margin-top: 0.5rem;
+}
+
+@media (min-width:500px){
+    .container-center{
+        width: 30%;
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+    }
+
+    .container-center-right{
+        width: 30%;
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+    }
+    
+    .container-inCenter {
+        width: 100%;
     }
 }
