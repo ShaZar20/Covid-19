@@ -61,7 +61,7 @@ export default class ParentDetails extends React.Component {
     render(){
         return(
             <div>
-                <button className="back-button"> <MdNavigateNext /> אחורה</button>
+                <button className="back-button" onClick={()=>this.props.setStep(0)}> <MdNavigateNext /> אחורה</button>
 
                 <div className="container-center-right">
                     <div className="text-sub-title">הצהרת ההורה</div>
@@ -111,6 +111,8 @@ export default class ParentDetails extends React.Component {
                 </div>
 
                 <div className="container-center">
+                    <div className="formcontainer">
+
                     <div className="text-paragraph-right">*שם ההורה</div>
                     <input 
                         style={{border: (this.state.errors.parentName ? "#EB5757 1.5px solid" : "")}}
@@ -121,6 +123,9 @@ export default class ParentDetails extends React.Component {
                         onFocus={() => {if(this.state.errors.parentName) {delete this.state.errors.parentName }}}
                     />
                     {this.state.errors.parentName && <div className="error-container">יש להזין את שמך המלא</div>}
+                    </div>
+                    <div className="formcontainer">
+
                     <div className="text-paragraph-right">*מספר ת.ז</div>
                     <input 
                         style={{border: (this.state.errors.Id ? "#EB5757 1.5px solid" : "")}}
@@ -131,6 +136,7 @@ export default class ParentDetails extends React.Component {
                         onFocus={() => {if(this.state.errors.Id) {delete this.state.errors.Id }}}
                     />
                     {this.state.errors.Id && <div className="error-container">מספר תעודת הזהות שהזנת לא תקין</div>}
+                    </div>
                 </div>
                 <div className="container-center">
                     <div className="container-checkbox">
@@ -151,11 +157,11 @@ export default class ParentDetails extends React.Component {
                     <button 
                         className="login-button"
                         onClick={() => this.lookForErrors()}
-                        disabled={ !(this.state.chBox1 &&
-                            this.state.chBox2 &&
-                            this.state.chBox3 &&
-                            this.state.chBox4 
-                        )}
+                        // disabled={ !(this.state.chBox1 &&
+                        //     this.state.chBox2 &&
+                        //     this.state.chBox3 &&
+                        //     this.state.chBox4 
+                        // )}
                     >
                         סיום ושליחה
                     </button>

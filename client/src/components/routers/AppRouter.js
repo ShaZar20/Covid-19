@@ -8,6 +8,7 @@ import Approved from '../Approved';
 import Header from '../Header';
 import Login from '../admin pages/Login';
 import DownloadReport from '../admin pages/DownloadReport';
+import Steps from '../Steps'
 
 const AppRouter = () => (
     <BrowserRouter>
@@ -15,7 +16,7 @@ const AppRouter = () => (
             <Header />
             <Switch>
                 <Route path="/" component={WelcomePage} exact={true} />
-                <Route path="/ChildrenDetails" component={ChildrenDetails} />
+                <Route path="/main" component={Steps} />
                 <Route path="/ParentDetails" component={ParentDetails} />
                 <Route path="/Approved" component={Approved} />
                 <Route path="/Login" component={Login} />

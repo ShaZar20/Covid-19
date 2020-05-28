@@ -15,7 +15,7 @@ const FormSchema = new Schema (
         check3:Boolean,
         parentName:String,
         parentId:String,
-        validate:Boolean,
+        validator:Boolean,
         date:String
     }
   );

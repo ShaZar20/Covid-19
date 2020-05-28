@@ -12,11 +12,18 @@
     align-items: center;
     text-align: center;
     margin: auto;
+    a{
+        text-decoration: none;
+        width:100%;
+        button{
+            margin:1rem 0 0 0;
+        }
+    }
 }
 
 .container-inCenter{
     display: flex;
-    width: 90%;
+    // width: 90%;
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -53,16 +60,23 @@
     }
 }
 
+
+.formcontainer{
+    display:flex;
+    flex-direction: column;
+    width:100%;
+    margin:10px 0;
+}
 .container-input{
     display: flex;
     border: black 1px solid;
     border-radius: 6px;
-    width: 85%;
+    // width: 85%;
     font-size: 18px;
     text-align: right;
     align-items: center;
     justify-items: center;
-    padding: 0 0.5rem;
+    padding: 1px 0.5rem;
 
     input{
         border: none;
@@ -79,7 +93,7 @@
     background: #E0E0E0;
     border-radius: 5px;
     border-style: none;
-    width: 90%;
+    // width: 90%;
     font-size: 16px;
     margin-top: 0.5rem;
 }

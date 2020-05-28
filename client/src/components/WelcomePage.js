@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 
 const WelcomePage = () => (
     <div className="container-center">
@@ -16,7 +17,7 @@ const WelcomePage = () => (
         <div className="spacer-column" />
          <div className="text-paragraph">נתראה בשבט!</div>
 
-        <button className="login-button">התחלה</button>
+        <Link to="/main" style={{width:"100%"}}><button className="login-button">התחלה</button></Link>
     </div>
 );
 
