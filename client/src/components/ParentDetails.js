@@ -41,12 +41,19 @@ export default class ParentDetails extends React.Component {
         }
         this.setState({ errors })
         if(_.isEmpty(errors)){
-            this.setState({
-              data: {
+            // this.setState({
+            //   data: {
+            //     nameOfParent: this.state.parentName,
+            //     IDNumber: this.state.IDNumber,
+            //   }
+            // })
+            let data = {
                 nameOfParent: this.state.parentName,
-                IDNumber: this.state.IDNumber,
-              }
-            })
+                IDNumber: this.state.IDNumber
+            }
+            this.props.setParent(data)
+            console.log("boom")
+            this.props.setStep(2)
           }
     }
 

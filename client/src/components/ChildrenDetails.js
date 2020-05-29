@@ -112,16 +112,25 @@ export default class ChildrenDetails extends React.Component {
           errors.madrich = true
         }
         if(_.isEmpty(errors)){
-          this.setState({
-            data: {
+          let data = {
               nameOfChild: this.state.nameOfChild,
               IDNumber: this.state.IDNumber,
               hanaga: this.state.hanagaSearchRes,
               shevet: this.state.shevetSearchRes,
               age: this.state.age,
               madrich: this.state.nameOfMadrich 
-            }
-          })
+          }
+          // this.setState({
+          //   data: {
+          //     nameOfChild: this.state.nameOfChild,
+          //     IDNumber: this.state.IDNumber,
+          //     hanaga: this.state.hanagaSearchRes,
+          //     shevet: this.state.shevetSearchRes,
+          //     age: this.state.age,
+          //     madrich: this.state.nameOfMadrich 
+          //   }
+          // })
+          this.props.setChild(data)
           this.props.setStep(1)
         }
         this.setState({ errors })

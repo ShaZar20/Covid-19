@@ -58,6 +58,9 @@ button:disabled {
     color: #828282;
     font-weight: 100;
     text-decoration: underline;
+    @media print{
+        display: none;
+    }
 
 }
 

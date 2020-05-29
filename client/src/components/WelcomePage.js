@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom'
 
 const WelcomePage = () => (
-    <div className="container-center">
+    <div className="container-center" >
 
         <div className="text-title">הסבר על התהליך</div>
 
