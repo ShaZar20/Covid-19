@@ -9,7 +9,7 @@ import Header from '../Header';
 import Login from '../admin pages/Login';
 import DownloadReport from '../admin pages/DownloadReport';
 import Steps from '../Steps'
-
+import Approval from '../approval'
 const AppRouter = () => (
     <BrowserRouter>
         <div className="container-fullPage">
@@ -17,10 +17,8 @@ const AppRouter = () => (
             <Switch>
                 <Route path="/" component={WelcomePage} exact={true} />
                 <Route path="/main" component={Steps} />
-                <Route path="/ParentDetails" component={ParentDetails} />
-                <Route path="/Approved" component={Approved} />
-                <Route path="/Login" component={Login} />
-                <Route path="/DownloadReport" component={DownloadReport} />
+                <Route path="/admin" component={Login} />
+                <Route path="/approval/:id" component={Approval} />
                 <Route component={NotFoundPage} />
             </Switch>
         </div>

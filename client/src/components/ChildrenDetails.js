@@ -3,14 +3,14 @@ import {Link} from 'react-router-dom';
 import {IoMdArrowDropdown} from 'react-icons/io';
 import {MdNavigateNext} from 'react-icons/md';
 import _ from 'lodash';
-
+import {tribes } from './resources'
 
 export default class ChildrenDetails extends React.Component {
     constructor(props){
         super(props);
 
         this.state = {
-            shvatim: [{name: "בזק", hanaga: "שרון דרום"}, {name:"אופק", hanaga: "שרון צפון"}],
+            shvatim :tribes,
             hanagaSearchRes: "",
             showHanaga: false,
             hanagaArrey: [],
@@ -36,9 +36,12 @@ export default class ChildrenDetails extends React.Component {
       let hanagaArrey = [];
       this.state.shvatim.map((resulte) => 
         {
-         hanagaArrey.push(resulte.hanaga); 
+          if(!hanagaArrey.includes(resulte.hanaga)){
+
+            hanagaArrey.push(resulte.hanaga); 
+          }
         })
-        console.log(hanagaArrey)
+        // console.log(hanagaArrey)
       this.setState({ hanagaArrey: hanagaArrey, searchResultesHanaga: hanagaArrey })
     };
 
@@ -195,11 +198,21 @@ export default class ChildrenDetails extends React.Component {
                   <li 
                   key={i} 
                   onClick={(e) => { 
-                    console.log("ss");             
+                    // console.log("ss");  
+                    console.log(this.state.shvatim,resulte)
+                    let shvatim = _.filter(this.state.shvatim,function(o){return o.hanaga == resulte})           
+                    
+                    let x = []
+                    shvatim.map((z)=>{
+                      x.push(z.shevet)
+                    })
                     this.setState({ 
                       isHanagaSelcted: true,
                       hanagaSearchRes: resulte,
-                      searchResultesHanaga: [] 
+                      searchResultesHanaga: [],
+                      shvatimArrey:x,
+                      searchResultesShvatim:x,
+                      shevetSearchRes:''
                     })
                   }}
                   >

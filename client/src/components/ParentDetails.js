@@ -51,9 +51,9 @@ export default class ParentDetails extends React.Component {
                 nameOfParent: this.state.parentName,
                 IDNumber: this.state.IDNumber
             }
-            this.props.setParent(data)
-            console.log("boom")
-            this.props.setStep(2)
+            // this.props.setParent(data)
+            // console.log("boom")
+            this.props.submit(data)
           }
     }
 

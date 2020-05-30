@@ -1,258 +1,427 @@
-import React from 'react';
-import {MdNavigateNext} from 'react-icons/md';
-import {IoMdArrowDropdown} from 'react-icons/io';
-import _ from 'lodash';
+import React,{useState,useEffect} from 'react'
+import XLSX from 'xlsx'
+import styled from 'styled-components'
+import axios from 'axios'
+import {BASE_URL} from '../../constants'
+import moment from 'moment'
+import { Multiselect } from 'multiselect-react-dropdown';
+import _ from 'lodash'
+import {BigUnits,tribes} from '../resources'
 
-export default class DownloadReport extends React.Component {
-    constructor(props){
-        super(props);
-
-        this.state = {
-            showDate: false,
-            date:"",
-            isDateSelcted: false,
-            searchResultesHanaga: [],
-            hanagaArrey: [],
-            hanagaSearchRes: "",
-            showHanaga: false,
-            isHanagaSelcted: false,
-            showShvatim: false,
-            isShevetSelcted: false,
-            shevetSearchRes: "",
-            searchResultesShvatim: [], 
-            shvatimArrey: ["בזק", "אופק"],
-            isAgeSelcted: true,
-            age: "",
-            showAge: false,
-            ageArrey: ["ג", "ד", "ה", "ו", "ז", "ח", "ט", "י", "יא", "יב"],
-
-            errors: {download: false}
-        };
+const Container = styled.div`
+    width: 500px;
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+    h1{
+        text-align:center;
+    }
+    div{
+        display:flex;
+        flex-direction:column;
+        width:100%;
+        margin-top:1rem;
+        label{
+            font-size:18px;
+            margin-bottom:5px;
+        }
+        #closed {
+            margin:0;
+            padding:1rem;
+            background:#E0E0E0;
+            font-size:18px;
+            border:1px solid black;
+            border-radius:6px;
+            width:unset;
+        }
+        button{
+            margin-top: 2rem;
+            padding: 1rem;
+            border: 1px solid white;
+            color:white;
+            border-radius: 6px;
+            background:#2D9CDB;
+            font-size:18px;
+        }
+        #lab{
+            text-align:center;
+        }
     }
 
-        searchHanga = (text = "" ) =>  {
-            if (text === "") {
-              return this.setState({ 
-                searchResultesHanaga: this.state.hanagaArrey,
-                hanagaSearchRes: ""
-              })
-            }
-            const resultes = [...this.state.hanagaArrey.filter(name => name.trim().indexOf(text.trim()) !== -1)];
-            this.setState({
-              searchResultesHanaga: resultes,
-              hanagaSearchRes: text
-              })
-          };
 
-          searchShevet = (text = "" ) =>  {
-              if (text === "") {
-                return this.setState({ 
-                  searchResultesShvatim: this.state.shvatimArrey,
-                  shevetSearchRes: ""
-                })
-              }
-              const resultes = [...this.state.shvatimArrey.filter(name => name.toLowerCase().trim().indexOf(text.toLowerCase().trim()) !== -1)];
-              this.setState({
-                searchResultesShvatim: resultes,
-                shevetSearchRes: text
-                })
-            };
-          
-            chooseAge = (text = "" ) =>  {
-              if (text === "") {
-                return this.setState({ 
-                  ageArrey: [],
-                  age: ""
-                })
-              }
-              this.setState({
-                age: text
-              })
-            }
+`
 
-            lookForErrors = () => {
-                let errors = {};
-                if(this.statedate == ""){
-                    errors.date=true
-                }
-                if(this.state.hanagaSearchRes == ""){
-                    errors.hanaga=true
-                }
-                if(this.state.shevetSearchRes == ""){
-                    errors.shevet=true
-                }
-                if(this.state.age == ""){
-                    errors.age=true
-                }
-                if(_.isEmpty(errors)){
-                    errors.download=true
-                } else {errors.download=false}
-                this.setState({ errors })
-            }
+const TagCon = styled.div`
+    display:flex;
+    flex-direction:row  !important;
+    width:unset !important;
+    border: 1px solid black;
+    padding: 2px;
+    min-height:30px;
+    border-radius: 6px;
+    outline:none;
+    flex-wrap:wrap;
+    div{
+        width:unset  !important;
+        margin:0 !important;
+        padding:5px;
+        font-size:18px;
+        color:#2F80ED;
+    }
+`
 
-    render(){
-        return(
-            <div className="container-center">
-                <button className="back-button"> <MdNavigateNext /> עמוד הבית</button>
+const Ul = styled.ul`
+    max-height:unset;
+    border:1px solid black;
+    border-radius:0 0 6px 6px;
+    ::-webkit-scrollbar {
+    width: 10px;
+    }
 
-                <div className="text-sub-title">הפקת דוח הצהרות יומי</div>
-                
-                <div className="text-paragraph-right">* תאריך</div>
-                    <div className="container-input" >
-                    <input 
-                        type="text"
-                        placeholder="היום"
-                        onChange={(e) => {}}
-                        onFocus={() => {this.setState({ showDate: true }); if(this.state.errors.hanaga) {delete this.state.errors.hanaga }}}
-                        onBlur={() => {
-                            setTimeout(() => {
-                            this.setState({ showDate: false })
-                            }, 300)
-                        }}
-                        value={this.state.date}
-                    />
-                    <IoMdArrowDropdown />
+    /* Track */
+    ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    }
 
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+    background: #888;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    }
+    .chosen{
+
+    }
+    .unchosen{
+
+    }
+`
+
+const Li = styled.li`
+    display:flex;
+    span{
+        width:10px;
+        height:10px;
+        border:1px solid #828282;
+        background:${props=>props.ch ? "#2F80ED":"transparent"};
+        margin:0 1rem;
+    }
+`
+
+const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove) => {
+    // console.log(level)
+    switch (state.level){
+        case "basic": // מרכז שבט
+            return (
+                <React.Fragment>
+                    <div>
+                        <label>הנהגה</label>
+                        <div id="closed">{state.bigunit}</div>
                     </div>
-                    {this.state.showDate && <ul>
-                    {this.state.searchResultesHanaga.map((resulte,i ) => 
-                    <li 
-                        key={i} 
-                        onClick={(e) => {              
-                            this.setState({ 
-                            isDateSelcted: true,
-                            date: resulte,
-                            showDate: false
-                            })
-                        }}
-                    >
-                    {resulte}
-                    </li>  
-                    )}   
-                    </ul>}
-
-                    <div className="text-paragraph-right">* הנהגה</div>
-                    <div className="container-input" 
-                        style={{border: (this.state.errors.hanaga ? "#EB5757 1.5px solid" : "")}}
-                    >
-                        <input 
-                            type="text"
-                            placeholder=""
-                            onChange={(e) => {this.searchHanga(e.target.value); }}
-                            onFocus={() => {this.setState({ showHanaga: true }); if(this.state.errors.hanaga) {delete this.state.errors.hanaga }}}
-                            onBlur={() => {
-                                setTimeout(() => {
-                                this.setState({ showHanaga: false })
-                                }, 300)
-                            }}
-                            value={this.state.hanagaSearchRes}
+                    <div>
+                        <label>שבט</label>
+                        <div id="closed">{state.unit}</div>
+                    </div>
+                </React.Fragment>
+            )
+        case "prem": // צוות הנהגה
+        
+            let a = _.filter(tribes,function(o){return o.hanaga == state.bigunit})
+            return (
+                <React.Fragment>
+                    <div>
+                        <label>הנהגה</label>
+                        <div id="closed">{state.bigunit}</div>
+                    </div>
+                    <div>
+                        <label>שבט</label>
+                        <MultiSelect 
+                        list={a}
+                        chosen={chosenShevet}
+                        ckey={'shevet'}
+                        type="shevet"
+                        add={onSelect}
+                        remove={onRemove}
+                        num={2}
+                        emptyphrase={"בחירת שבט"}
                         />
-                        <IoMdArrowDropdown />
                     </div>
-                    {this.state.showHanaga && <ul>
-                    {this.state.searchResultesHanaga.map((resulte,i ) => 
-                    <li 
-                        key={i} 
-                        onClick={(e) => {              
-                            this.setState({ 
-                                isHanagaSelcted: true,
-                                hanagaSearchRes: resulte,
-                                showHanaga: false
-                            })
-                        }}
-                    >
-                    {resulte}
-                    </li>  
-                    )}   
-                    </ul>}
-
-                    <div className="text-paragraph-right">* שבט</div>
-                    <div className="container-input" 
-                        //style={{background: (this.state.isHanagaSelcted ? "none" : "#E0E0E0"), 
-                        //border: (this.state.errors.shevet ? "#EB5757 1.5px solid" : "")}}
-                    >
-                        <input 
-                            type="text"
-                            placeholder="כל השבטים"
-                            onChange={(e) => { this.searchShevet(e.target.value); }}
-                            onFocus={() => {this.setState({ showShvatim: true }); if(this.state.errors.shevet) {delete this.state.errors.shevet }}}
-                            onBlur={() => {
-                                setTimeout(() => {
-                                    this.setState({ showShvatim: false })
-                                }, 300)
-                            }}
-                            value={this.state.shevetSearchRes}
+                </React.Fragment>
+            )    
+        case "master": // מטה
+            let av = []
+            let real =[]
+            tribes.map((x)=>{
+                if(!av.includes(x.hanaga)){
+                    av.push(x.hanaga)
+                    real.push({id:x.hanaga})
+                }
+            })
+            return(
+                <React.Fragment>
+                    <div>
+                        <label>הנהגה</label>
+                        <MultiSelect 
+                            list={real}
+                            chosen={chosenHanaga}
+                            ckey={'id'}
+                            type="hanaga"
+                            add={onSelect}
+                            remove={onRemove}
+                            num={1}
+                            emptyphrase={"בחירת הנהגה"}
                         />
-                        <IoMdArrowDropdown />
                     </div>
-                    {this.state.errors.shevet && <div className="error-container">יש לבחור שבט</div>}
-                    {this.state.showShvatim && <ul>
-                    {this.state.searchResultesShvatim.map((resulte,i ) => 
-                    <li 
-                        key={i} 
-                        onClick={(e) => {              
-                        this.setState({ 
-                            isShevetSelcted: true,
-                            shevetSearchRes: resulte,
-                            searchResultesShvatim: [] 
-                        })
-                        }}
-                    >     
-                    {resulte}
-                    </li>)}   
-                    </ul>}
-
-                    <div className="text-paragraph-right">* שכבה</div>
-                    <div className="container-input"
-                        style={{border: (this.state.errors.age ? "#EB5757 1.5px solid" : "")}}
-                    >
-                        <input 
-                            type="text"
-                            placeholder="כל השכבות"
-                            onChange={(e) => { this.chooseAge(e.target.value); }}
-                            onFocus={() => {this.setState({ showAge: true }); if(this.state.errors.age) {delete this.state.errors.child }}}
-                            onBlur={() => {
-                            setTimeout(() => {
-                                this.setState({ showAge: false })
-                            },300)
-                            }}
-                            value={this.state.age}
-                        />
-                        <IoMdArrowDropdown />
-                    </div>
-                    {this.state.errors.age && <div className="error-container">יש לבחור שכבה</div>}
-                    {this.state.showAge && <ul >
-                        {this.state.ageArrey.map((resulte,i ) => 
-                        <li 
-                            key={i} 
-                            onClick={(e) => {              
-                            this.setState({ 
-                                isAgeSelcted: true,
-                                age: resulte,
-                                showAge: false
-                            })
-                            }}
-                        >
-                        {resulte}
-                        </li>)}   
-                    </ul>}
-                    
-                    <button 
-                        className="login-button"
-                        disabled={!(this.state.isDateSelcted &&
-                            this.state.IDNumber !== "" &&
-                            this.state.isHanagaSelcted &&
-                            this.state.isShevetSelcted &&
-                            this.state.isAgeSelcted 
-                        )}
-                        onClick={() => this.lookForErrors()}
-                    >
-                     הורדת הדוח באקסל
-                    </button>
-                    {this.state.errors.download && <div>הורדת הדוח מתבצעת</div>}
-            </div>
-
-        )
+                </React.Fragment>
+            )
+            break;
     }
 }
 
+const MultiSelect = ({list,ckey,chosen,add,remove,type,num,emptyphrase}) => {
+    const [show,setShow] = useState(false)
+    return (
+        <div  tabIndex={num} style={{outline:"none",margin:"0"}} onBlur={()=>{
+            setShow(false)
+        }}> 
+            <TagCon onClick={()=>{
+                setShow(true)
+            }}>
+                {chosen.length == "0" && 
+                    <label>{emptyphrase}</label>
+                }
+                {chosen.map((ch,i)=>{
+                    {/* console.log(ch) */}
+                    return (
+                        <React.Fragment>
+                            <div>{ch[ckey]}</div>
+                            {chosen.length-1 != i && <div>,</div>}
+                        </React.Fragment>
+                    )
+                })}
+            </TagCon>
+            {
+                show &&
+                <Ul>
+                    {list.map((item,ind)=>{
+                        let s =[]
+                        let a = _.find(chosen,function(o){return o[ckey] == item[ckey]})
+                        console.log(a)
+                        if(a){
+                            return (
+                                <Li 
+                                onClick={()=>{
+                                    remove(ind,item,type)
+                                }}
+                                ch={true}>
+                                    <span/>
+                                    {item[ckey]}
+                                </Li>
+                                )
+                        }else{
+                            return (<Li ch={false}
+                                className="unchosen"
+                                onClick={()=>{
+                                    // to choose
+                                    add(chosen,item,type)
+                                }}
+                                >
+                                <span/>
+                                {item[ckey]}</Li>
+                                )
+                        }
+                        
+                    })}
+                </Ul>
+            }
+        </div>
+    )
+}
+
+
+
+const DownloadReport = ({state}) => {
+    const ageArrey =  [{id:"ג"},{id:"ד"},{id:"ה"},{id:"ו"},{id:"ז"},{id:"ח"},{id:"ט"},{id:"י"},{id:"יא"},{id:"יב"}]
+    const [chosenDate,setChosend] = useState(moment().format("YYYY-MM-DD"))
+    const [chosenAge,setChosen] = useState([])
+    const [chosenShevet,setShevet] = useState([])
+    const [chosenHanaga,setHanaga] = useState([])
+    // console.log(state.level)
+    const [down,setDonw] = useState(false)
+
+    useEffect(()=>{
+        switch(state.level){
+            case "basic":
+                setShevet([{shevet:state.unit}])
+                setHanaga([{id:state.bigunit}])
+                break;
+            case "prem":
+                setHanaga([{id:state.bigunit}]);
+                break;
+
+        }
+    },[])
+    const exportToXlsx = () => {
+        
+        let bigunitsto = []
+        chosenHanaga.map((x)=>{
+            bigunitsto.push(x.id)
+        })
+        let unitsto = []
+        chosenShevet.map((c)=>{
+            unitsto.push(c.shevet)
+        })
+        let dateto = moment(chosenDate,"YYYY-MM-DD").format("DD/MM/YYYY")
+        let ageTo = []
+        chosenAge.map((s)=>{
+            ageTo.push(s.id)
+        })
+        let data = {
+            date:dateto,
+            bigUnits:bigunitsto,
+            units:unitsto,
+            age:ageTo
+            
+        }
+        // console.log(data)
+        setDonw(true)
+        axios.post(BASE_URL+'/api/forms/'+state.level,{data})
+        .then(res=>{
+            // console.log(res)
+            setDonw(false)
+            let output = [
+                {
+                    childId:"ת.ז חניך",
+                    childName:"שם מלא חניך",
+                    date:"תאריך",
+                    gil:"שכבת גיל",
+                    guideName:"שם המדריך",
+                    hanaga:"הנהגה",
+                    shevet:"שבט",
+                    parentId:"ת.ז הורה",
+                    parentName:"שם מלא הורה"
+                }
+            ]
+            res.data.map((row)=>{
+                output.push({
+                    childId:row.childId,
+                    childName:row.childName,
+                    date:row.date,
+                    gil:row.gil,
+                    guideName:row.guideName,
+                    hanaga:row.hanaga,
+                    shevet:row.shevet,
+                    parentId:row.parentId,
+                    parentName:row.parentName
+                })
+            })
+            var wb = {
+                Workbook:{
+                     Views: [
+                        {RTL:true}
+                      ]
+                },
+                SheetNames:[],
+                Sheets: {} 
+            }
+            var ws_name="Sheet1"
+            var ws = XLSX.utils.json_to_sheet(output,{header:["childId","childName","date","gil","guideName","hanaga","shevet","parentId","parentName"],skipHeader:true})
+            // var ws = XLSX.utils.aoa_to_sheet(ws_data);
+            XLSX.utils.book_append_sheet(wb, ws, ws_name);
+            XLSX.writeFile(wb, `דוח_${dateto}.xlsx`,  {bookType:"xlsx",  type:'buffer'})
+        })
+        
+
+
+    }
+
+    const onSelect = (list,value,type) =>{
+        console.log(value)
+        switch(type){
+            case "age":
+                let d = [...chosenAge]
+                d.push(value)
+                setChosen(d)
+                break;
+            case "shevet":
+                let d1=[...chosenShevet]
+                d1.push(value)
+                setShevet(d1)
+                break;
+            case "hanaga":
+                let d2=[...chosenHanaga]
+                d2.push(value)
+                setHanaga(d2)
+                break;
+        }
+
+    }
+    const onRemove = (index,value,type) =>{
+        switch(type){
+            case "age":
+                let d = [...chosenAge]
+                let c =[]
+                d.map((x)=>{
+                    if(x.id != value.id){
+                        c.push(x)
+                    }
+                })
+                setChosen(c)
+                break;
+            case 'shevet':
+                let d1 = [...chosenShevet]
+                let c1 =[]
+                d1.map((xx)=>{
+                    if(xx.shevet != value.shevet){
+                        c1.push(xx)
+                    }
+                })
+                setShevet(c1)
+                break;
+            case 'hanaga':
+                let d2 = [...chosenHanaga]
+                let c2 = []
+                d2.map((xxx)=>{
+                    if(xxx.id !=value.id){
+                        c2.push(xxx)
+                    }
+                })
+                setHanaga(d2)
+                break;
+
+        }
+    }
+    return (
+        <Container>
+            <h1>הפקת דוח הצהרות יומי</h1>
+            <div>
+                <label>תאריך</label>
+                <input value={chosenDate} onChange={(e)=>setChosend(e.target.value)} type="date"/>
+            </div>
+            {state.level && Permission(state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove)}
+            <div>
+                <label>שכבה</label>
+                <MultiSelect 
+                list={ageArrey}
+                chosen={chosenAge}
+                ckey={'id'}
+                type="age"
+                add={onSelect}
+                remove={onRemove}
+                num={3}
+                emptyphrase={"בחירת שכבת גיל"}
+                />
+            </div>
+            <div>
+                <button onClick={()=>exportToXlsx()} style={{background:(down ? "#828282":"#2D9CDB")}}>הורדת הדוח באקסל</button>
+                {down && <label id="lab">הורדת הדוח מתבצעת</label>}
+            </div>
+
+        </Container>
+    )
+}
+
+export default DownloadReport;

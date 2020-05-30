@@ -20,18 +20,20 @@ const Label = ({text}) => {
     )
 }
 
-const Approved = ({name,setChild,setParent,setStep}) => {
+const Approved = ({name,setChild,setParent,setStep,url}) => {
     const date = moment()
+    // console.log(name)
+    name = "tchr acd"
     let fullname = name.split(" ")
     return (
         <div className="container-center">
-                <div className="text-title"> אישור השתתפות בפעילות - {NamedNodeMap}</div>
+                <div className="text-title"> אישור השתתפות בפעילות - {name}</div>
                 <div className="text-paragraph">ההצהרה נשלחה בהצלחה וניתן להשתתף בפעילות!</div>
                 
                 <FiCheck className="icon-check" />
                 <div>{date.format("LLLL")}</div>
                 <div className="spacer-column" />
-                <SendViaWhatsappButton />
+                <SendViaWhatsappButton url={url}/>
                 <DownloadButton />
                 <div className="spacer-column" />
                 <div className="text-paragraph">ניפגש בשבט,</div>
