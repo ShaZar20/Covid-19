@@ -111,7 +111,7 @@ const Li = styled.li`
     }
 `
 
-const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove) => {
+const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,ChooseHanaga,send) => {
     // console.log(level)
     switch (state.level){
         case "basic": // מרכז שבט
@@ -160,11 +160,28 @@ const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove) =>
                     real.push({id:x.hanaga})
                 }
             })
+            // let a1 = _.filter(tribes,function(o){return o.hanaga == state.bigunit})
+            // console.log(chosenHanaga)
             return(
                 <React.Fragment>
                     <div>
                         <label>הנהגה</label>
-                        <MultiSelect 
+                        <select
+                        value={chosenHanaga[0]}
+                        onChange={(e)=>{
+                            ChooseHanaga(e.target.value)
+                            // onSelect([],e.target.value,'hanaga')
+                        }}
+                        >
+                            <option value={''}>בחירת הנהגה</option>
+                            {real.map((x)=>{
+                                return <option value={x}>
+                                    {x.id}
+                                </option>
+                            })}
+                        </select>
+                        
+                        {/* <MultiSelect 
                             list={real}
                             chosen={chosenHanaga}
                             ckey={'id'}
@@ -173,6 +190,19 @@ const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove) =>
                             remove={onRemove}
                             num={1}
                             emptyphrase={"בחירת הנהגה"}
+                        /> */}
+                    </div>
+                    <div>
+                        <label>שבט</label>
+                        <MultiSelect 
+                        list={send}
+                        chosen={chosenShevet}
+                        ckey={'shevet'}
+                        type="shevet"
+                        add={onSelect}
+                        remove={onRemove}
+                        num={2}
+                        emptyphrase={"בחירת שבט"}
                         />
                     </div>
                 </React.Fragment>
@@ -250,6 +280,7 @@ const DownloadReport = ({state}) => {
     const [chosenShevet,setShevet] = useState([])
     const [chosenHanaga,setHanaga] = useState([])
     // console.log(state.level)
+    const [send,setSend] = useState([])
     const [down,setDonw] = useState(false)
 
     useEffect(()=>{
@@ -338,6 +369,12 @@ const DownloadReport = ({state}) => {
 
     }
 
+    const ChooseHanaga = (val) => {
+        setHanaga([val])
+        let arr = _.filter(tribes,function(o){return o.hanaga == val})
+        setSend(arr)
+    }
+
     const onSelect = (list,value,type) =>{
         console.log(value)
         switch(type){
@@ -401,7 +438,7 @@ const DownloadReport = ({state}) => {
                 <label>תאריך</label>
                 <input value={chosenDate} onChange={(e)=>setChosend(e.target.value)} type="date"/>
             </div>
-            {state.level && Permission(state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove)}
+            {state.level && Permission(state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,ChooseHanaga,send)}
             <div>
                 <label>שכבה</label>
                 <MultiSelect 
