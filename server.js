@@ -21,20 +21,28 @@ app.set('trust proxy', true);
 app.use(bodyParser.json({limit: '50mb', extended: true}))
 
 app.use('/api', router);
-app.use('/api/tribes', tribes);
+app.use('/api/accounts', tribes);
 app.use('/api/forms', forms);
+
+
 
 const dbRoute = require('./config/keys').mongoURI;
 
-mongoose.connect(dbRoute, {
-  useNewUrlParser: true ,
-   useUnifiedTopology: true,
-   useFindAndModify: false
- });
+try{
 
-let db = mongoose.connection;
-db.once('open', () => console.log('connected to the database'));
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+  mongoose.connect(dbRoute, {
+    useNewUrlParser: true ,
+     useUnifiedTopology: true,
+     useFindAndModify: false
+   });
+  
+  let db = mongoose.connection;
+  db.once('open', () => console.log('connected to the database'));
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+}
+catch(err){
+
+}
 
 
 router.get('/',(req,res)=>{
