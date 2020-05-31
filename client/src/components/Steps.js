@@ -46,6 +46,7 @@ const Steps = () => {
             validator:true,
             date:moment().format("DD/MM/YYYY")
         }
+        console.log(data)
         axios.post(BASE_URL+'/api/forms',{data}).then((res)=>{
             if(!_.isEmpty(res.data)){
                 setUrl(res.data._id)

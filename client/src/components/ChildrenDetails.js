@@ -111,9 +111,9 @@ export default class ChildrenDetails extends React.Component {
         if(this.state.age == "") {
           errors.age = true
         }
-        if(this.state.nameOfMadrich.split(" ").length < 2 ) {
-          errors.madrich = true
-        }
+        // if(this.state.nameOfMadrich.split(" ").length < 2 ) {
+        //   errors.madrich = true
+        // }
         if(_.isEmpty(errors)){
           let data = {
               nameOfChild: this.state.nameOfChild,
@@ -121,7 +121,7 @@ export default class ChildrenDetails extends React.Component {
               hanaga: this.state.hanagaSearchRes,
               shevet: this.state.shevetSearchRes,
               age: this.state.age,
-              madrich: this.state.nameOfMadrich 
+              // madrich: this.state.nameOfMadrich 
           }
           // this.setState({
           //   data: {
@@ -157,7 +157,7 @@ export default class ChildrenDetails extends React.Component {
                     onFocus={() => {if(this.state.errors.child) {delete this.state.errors.child }}}
                     
                 />
-                {this.state.errors.child && <div className="error-container">יש להזין את שם החניך/ה</div>}
+                {this.state.errors.child && <div className="error-container">יש להזין את השם המלא של החניך/ה</div>}
                 </div>
                 <div className="formcontainer">
                 <div className="text-paragraph-right">* מספר ת.ז</div>

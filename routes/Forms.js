@@ -6,7 +6,7 @@ const Forms = require('../models/Forms');
 
 router.get('/:time',(req,res)=>{
     //req.params.time
-    let query = {date:req.params.time}
+    let query = {_id:req.params.time}
     Forms.find(query,(err,doc)=>{
         if(err){
             console.log(err)
@@ -20,6 +20,7 @@ router.get('/:time',(req,res)=>{
 
 router.post('/',(req,res)=>{
     let newForm = new Forms(req.body.data)
+    newForm._id = mongoose.Types.ObjectId()
     newForm.save(function(err,doc){
         if(err){
             console.log(err)

@@ -10,10 +10,9 @@ const WelcomePage = () => (
         <div className="text-paragraphBold">יש לקרוא היטב את ההנחיות למילוי
         ההצהרה ולוודא שהפרטים נכונים ומדוייקים.</div>
 
-        <div className="text-paragraph">בסיום התהליך, תקבלו את הצהרת הבריאות
-        ישירות לתיבת הדואר האלקטרוני שלכם/ן
-        ותוכולו להציגה למדריך/ה או לשתף
-         דרך ה - Whatsapp.</div>
+        <div className="text-paragraph">
+        בסיום התהליך ניתן להוריד את האישור למכשיר ולהציגו למדריך/ה באמצעות שליחה ל-Whatsapp.
+         </div>
         <div className="spacer-column" />
          <div className="text-paragraph">נתראה בשבט!</div>
 
