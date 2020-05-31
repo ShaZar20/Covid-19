@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const FormSchema = new Schema (
     {
-        _id:mongoose.Types.ObjectId,
         childName:String,
         childId:String,
         hanaga:String,
