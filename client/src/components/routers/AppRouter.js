@@ -10,6 +10,8 @@ import Login from '../admin pages/Login';
 import DownloadReport from '../admin pages/DownloadReport';
 import Steps from '../Steps'
 import Approval from '../approval'
+import View from '../ShevetView'
+
 const AppRouter = () => (
     <BrowserRouter>
         <div className="container-fullPage">
@@ -19,6 +21,7 @@ const AppRouter = () => (
                 <Route path="/main" component={Steps} />
                 <Route path="/admin" component={Login} />
                 <Route path="/approval/:id" component={Approval} />
+                <Route path="/shevet/:code" component={View} />
                 <Route component={NotFoundPage} />
             </Switch>
         </div>
