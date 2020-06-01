@@ -80,7 +80,21 @@ export default class ParentDetails extends React.Component {
                             type="checkbox" 
                             id="chB1" 
                             name="bodyTemp" 
-                            onChange={(e) => this.setState({chBox1: true})}
+                            onChange={(e) => {
+                                let aller = this.state.errors
+                                if(this.state.chBox1){
+                                    aller.chBox1 = true
+                                    this.setState({
+                                        chBox1: !this.state.chBox1,
+                                        errors:aller
+                                    })
+                                }else{
+                                    this.setState({
+                                        chBox1: !this.state.chBox1
+                                    })
+                                }
+                                
+                                }}
                             onFocus={() => {if(this.state.errors.chBox1) {delete this.state.errors.chBox1 }}}
                             />
                             <span className="checkmark"></span>
@@ -95,7 +109,20 @@ export default class ParentDetails extends React.Component {
                             type="checkbox" 
                             id="chB2" 
                             name="coughing" 
-                            onChange={(e) => this.setState({chBox2: true})}
+                            onChange={(e) => {
+                                let aller = this.state.errors
+                                if(this.state.chBox2){
+                                    aller.chBox2 = true
+                                    this.setState({
+                                        chBox2: !this.state.chBox2,
+                                        errors:aller
+                                    })
+                                }else{
+                                    this.setState({
+                                        chBox2: !this.state.chBox2
+                                    })
+                                }
+                            }}
                             onFocus={() => {if(this.state.errors.chBox2) {delete this.state.errors.chBox2 }}}
                             />
                         <div className="text-paragraph-right-bold">בני/בתי לא משתעל/ת ואין לו/לה קשיי נשימה</div>
@@ -109,7 +136,20 @@ export default class ParentDetails extends React.Component {
                             type="checkbox" 
                             id="chB3" 
                             name="metCovid" 
-                            onChange={(e) => this.setState({chBox3: true})}
+                            onChange={(e) => {
+                                let aller = this.state.errors
+                                if(this.state.chBox3){
+                                    aller.chBox3 = true
+                                    this.setState({
+                                        chBox3: !this.state.chBox3,
+                                        errors:aller
+                                    })
+                                }else{
+                                    this.setState({
+                                        chBox3: !this.state.chBox3
+                                    })
+                                }
+                            }}
                             onFocus={() => {if(this.state.errors.chBox3) {delete this.state.errors.chBox3 }}}
                             />
                         <div className="text-paragraph-right-bold">למיטב ידיעתי בני/בתי לא היה/הייתה במגע קרוב עם חולה קורונה בשבועיים האחרונים</div>
@@ -154,7 +194,20 @@ export default class ParentDetails extends React.Component {
                             type="checkbox" 
                             id="chB4" 
                             name="confirm" 
-                            onChange={(e) => this.setState({chBox4: true})}
+                            onChange={(e) => {
+                                let aller = this.state.errors
+                                if(this.state.chBox4){
+                                    aller.chBox4 = true
+                                    this.setState({
+                                        chBox4: !this.state.chBox4,
+                                        errors:aller
+                                    })
+                                }else{
+                                    this.setState({
+                                        chBox4: !this.state.chBox4
+                                    })
+                                }
+                            }}
                             onFocus={() => {if(this.state.errors.chBox4) {delete this.state.errors.chBox4 }}}
                             />
                         <div className="text-paragraph-right-bold">אני מאשר/ת כי הפרטים שהצהרתי נכונים</div>

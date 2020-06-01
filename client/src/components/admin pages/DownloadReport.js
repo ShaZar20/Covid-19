@@ -118,6 +118,7 @@ const Ul = styled.ul`
 const Li = styled.li`
     display:flex;
     span{
+        cursor:pointer;
         width:10px;
         height:10px;
         border:1px solid #828282;
@@ -126,7 +127,7 @@ const Li = styled.li`
     }
 `
 
-const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,ChooseHanaga,send) => {
+const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,ChooseHanaga,send,choseAll,removeAll) => {
     // console.log(level)
     switch (state.level){
         case "basic": // מרכז שבט
@@ -162,6 +163,8 @@ const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,Cho
                         remove={onRemove}
                         num={2}
                         emptyphrase={"בחירת שבט"}
+                        choseAll={choseAll}
+                        removeAll={removeAll}
                         />
                     </div>
                 </React.Fragment>
@@ -226,6 +229,8 @@ const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,Cho
                         remove={onRemove}
                         num={2}
                         emptyphrase={"בחירת שבט"}
+                        choseAll={choseAll}
+                        removeAll={removeAll}
                         />
                     </div>
                 </React.Fragment>
@@ -234,7 +239,7 @@ const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,Cho
     }
 }
 
-const MultiSelect = ({list,ckey,chosen,add,remove,type,num,emptyphrase}) => {
+const MultiSelect = ({list,ckey,chosen,add,remove,type,num,emptyphrase,choseAll,removeAll}) => {
     const [show,setShow] = useState(false)
     return (
         <div  tabIndex={num} style={{outline:"none",margin:"0"}} onBlur={()=>{
@@ -259,6 +264,18 @@ const MultiSelect = ({list,ckey,chosen,add,remove,type,num,emptyphrase}) => {
             {
                 show &&
                 <Ul>
+                    <Li
+                    ch={list.length == chosen.length}
+                    onClick={()=>{
+                        if(list.length == chosen.length){
+                            removeAll(type)
+                        }else{
+                            choseAll(type,list)
+                        }
+                    }}
+                    >
+                    <span/>
+                    בחר הכל</Li>
                     {list.map((item,ind)=>{
                         let s =[]
                         let a = _.find(chosen,function(o){return o[ckey] == item[ckey]})
@@ -299,7 +316,7 @@ const MultiSelect = ({list,ckey,chosen,add,remove,type,num,emptyphrase}) => {
 const DownloadReport = ({state}) => {
     const ageArrey =  [{id:"ג"},{id:"ד"},{id:"ה"},{id:"ו"},{id:"ז"},{id:"ח"},{id:"ט"},{id:"י"},{id:"יא"},{id:"יב"}]
     const [chosenDate,setChosend] = useState(moment().format("YYYY-MM-DD"))
-    const [chosenAge,setChosen] = useState([])
+    const [chosenAge,setChosen] = useState(ageArrey)
     const [chosenShevet,setShevet] = useState([])
     const [chosenHanaga,setHanaga] = useState([])
     // console.log(state.level)
@@ -314,7 +331,24 @@ const DownloadReport = ({state}) => {
                 break;
             case "prem":
                 setHanaga([{id:state.bigunit}]);
+                let all = []
+                tribes.map((z)=>{
+                    if(z.hanaga == state.bigunit){
+                        all.push(z)
+                    }
+                })
+                setShevet(all)
                 break;
+            // case "master":
+            //     // let b = []
+            //     // let final = []
+            //     // tribes.map((q)=>{
+            //     //     if(!b.includes(q.hanaga)){
+            //     //         b.push(q.hanaga)
+            //     //         final.push({id:q.hanaga})
+            //     //     }
+            //     // })
+                // setHanaga(final)
 
         }
     },[])
@@ -393,12 +427,41 @@ const DownloadReport = ({state}) => {
 
     }
 
+    const removeAll = (type) => {
+        switch(type){
+            case "age":
+
+                setChosen([])
+                break;
+            case "shevet":
+                setShevet([])
+                break;
+            case "hanaga":
+                setHanaga([])
+                break;
+        }
+    }
+
+    const choseAll = (type,list) => {
+        switch(type){
+            case "age":
+                setChosen(list)
+                break;
+            case "shevet":
+                setShevet(list)
+                break;
+            case "hanaga":
+                setHanaga(list)
+                break;
+        } 
+    }
+
     const ChooseHanaga = (val) => {
         // console.log(val)
         setHanaga([{id:val.id}])
         let arr = _.filter(tribes,function(o){return o.hanaga == val.id})
         setSend(arr)
-        setShevet([])
+        setShevet(arr)
     }
 
     const onSelect = (list,value,type) =>{
@@ -464,7 +527,7 @@ const DownloadReport = ({state}) => {
                 <label>תאריך</label>
                 <input value={chosenDate} onChange={(e)=>setChosend(e.target.value)} type="date"/>
             </div>
-            {state.level && Permission(state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,ChooseHanaga,send)}
+            {state.level && Permission(state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,ChooseHanaga,send,choseAll,removeAll)}
             <div>
                 <label>שכבה</label>
                 <MultiSelect 
@@ -476,6 +539,8 @@ const DownloadReport = ({state}) => {
                 remove={onRemove}
                 num={3}
                 emptyphrase={"בחירת שכבת גיל"}
+                choseAll={choseAll}
+                removeAll={removeAll}
                 />
             </div>
             <div>

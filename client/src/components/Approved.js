@@ -55,8 +55,13 @@ const Approved = ({name,setChild,setParent,setStep,url}) => {
                         <Label text={"בפעילות"}/>
                         </div>
                         <div style={{fontSize:"18px",margin:"10px 0"}}>
-                            <Label text={fullname[0]}/>
-                            <Label text={fullname[1]}/>
+                            {
+                                fullname.map((x)=>{
+                                    return (
+                                        <Label text={x}/>
+                                    )
+                                })
+                            }
                         </div>
                         <div >
                             <Label text={date.format("DD/MM/YYYY")}/>

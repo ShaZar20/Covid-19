@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '../images/Zofim-logo.png';
+console.log(window.location)
 
 const Header = () => (
     <div className="header">
