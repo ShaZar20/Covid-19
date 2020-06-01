@@ -169,8 +169,8 @@ const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,Cho
         case "master": // מטה
             let av = []
             let real =[]
-            console.log("chosen hanaga",chosenHanaga)
-            console.log(send)
+            // console.log("chosen hanaga",chosenHanaga)
+            // console.log(send)
             tribes.map((x)=>{
                 if(!av.includes(x.hanaga)){
                     av.push(x.hanaga)
@@ -179,13 +179,18 @@ const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,Cho
             })
             // let a1 = _.filter(tribes,function(o){return o.hanaga == state.bigunit})
             // console.log(chosenHanaga)
+            let valueof = {id:''}
+            if(chosenHanaga[0] != ''){
+                valueof = chosenHanaga[0]
+            }
+            console.log(valueof)
             return(
                 <React.Fragment>
                     <div>
                         <label>הנהגה</label>
                         <select
                         // style={{color:(chosenHanaga[0]=='' ? "#828282":"#2F80ED")}}
-                        value={chosenHanaga[0]}
+                        // value={valueof.id}
                         onChange={(e)=>{
                             ChooseHanaga({id:e.target.value})
                             // onSelect([],e.target.value,'hanaga')
@@ -317,6 +322,7 @@ const DownloadReport = ({state}) => {
         
         let bigunitsto = []
         chosenHanaga.map((x)=>{
+            console.log(x)
             bigunitsto.push(x.id)
         })
         let unitsto = []
@@ -388,15 +394,15 @@ const DownloadReport = ({state}) => {
     }
 
     const ChooseHanaga = (val) => {
-        console.log(val)
-        setHanaga([val.id])
+        // console.log(val)
+        setHanaga([{id:val.id}])
         let arr = _.filter(tribes,function(o){return o.hanaga == val.id})
         setSend(arr)
         setShevet([])
     }
 
     const onSelect = (list,value,type) =>{
-        console.log(value)
+        // console.log(value)
         switch(type){
             case "age":
                 let d = [...chosenAge]
