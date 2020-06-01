@@ -47,7 +47,22 @@ const Container = styled.div`
             text-align:center;
         }
     }
-
+    select{
+        display:flex;
+        flex-direction:row  !important;
+        width:unset !important;
+        border: 1px solid black;
+        padding: 2px;
+        min-height:30px;
+        border-radius: 6px;
+        outline:none;
+        flex-wrap:wrap;
+        width:unset  !important;
+        margin:0 !important;
+        padding:5px;
+        font-size:18px;
+        /* color:#2F80ED; */
+    }
 
 `
 
@@ -154,6 +169,8 @@ const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,Cho
         case "master": // מטה
             let av = []
             let real =[]
+            console.log("chosen hanaga",chosenHanaga)
+            console.log(send)
             tribes.map((x)=>{
                 if(!av.includes(x.hanaga)){
                     av.push(x.hanaga)
@@ -167,15 +184,16 @@ const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,Cho
                     <div>
                         <label>הנהגה</label>
                         <select
+                        // style={{color:(chosenHanaga[0]=='' ? "#828282":"#2F80ED")}}
                         value={chosenHanaga[0]}
                         onChange={(e)=>{
-                            ChooseHanaga(e.target.value)
+                            ChooseHanaga({id:e.target.value})
                             // onSelect([],e.target.value,'hanaga')
                         }}
                         >
                             <option value={''}>בחירת הנהגה</option>
                             {real.map((x)=>{
-                                return <option value={x}>
+                                return <option value={x.id}>
                                     {x.id}
                                 </option>
                             })}
@@ -370,9 +388,11 @@ const DownloadReport = ({state}) => {
     }
 
     const ChooseHanaga = (val) => {
-        setHanaga([val])
-        let arr = _.filter(tribes,function(o){return o.hanaga == val})
+        console.log(val)
+        setHanaga([val.id])
+        let arr = _.filter(tribes,function(o){return o.hanaga == val.id})
         setSend(arr)
+        setShevet([])
     }
 
     const onSelect = (list,value,type) =>{
