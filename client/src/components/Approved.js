@@ -23,7 +23,7 @@ const Label = ({text}) => {
 const Approved = ({name,setChild,setParent,setStep,url}) => {
     const date = moment()
     // console.log(name)
-    name = "tchr acd"
+    // name = "tchr acd"
     let fullname = name.split(" ")
     return (
         <div className="container-center">
