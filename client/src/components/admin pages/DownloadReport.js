@@ -163,6 +163,7 @@ const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,Cho
                         remove={onRemove}
                         num={2}
                         emptyphrase={"בחירת שבט"}
+                        fullphrase={"כל השבטים"}
                         choseAll={choseAll}
                         removeAll={removeAll}
                         />
@@ -229,6 +230,7 @@ const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,Cho
                         remove={onRemove}
                         num={2}
                         emptyphrase={"בחירת שבט"}
+                        fullphrase={"כל השבטים"}
                         choseAll={choseAll}
                         removeAll={removeAll}
                         />
@@ -239,7 +241,7 @@ const Permission = (state,tribes,chosenShevet,chosenHanaga,onSelect,onRemove,Cho
     }
 }
 
-const MultiSelect = ({list,ckey,chosen,add,remove,type,num,emptyphrase,choseAll,removeAll}) => {
+const MultiSelect = ({list,ckey,chosen,add,remove,type,num,emptyphrase,choseAll,removeAll,fullphrase}) => {
     const [show,setShow] = useState(false)
     return (
         <div  tabIndex={num} style={{outline:"none",margin:"0"}} onBlur={()=>{
@@ -248,18 +250,27 @@ const MultiSelect = ({list,ckey,chosen,add,remove,type,num,emptyphrase,choseAll,
             <TagCon onClick={()=>{
                 setShow(true)
             }}>
-                {chosen.length == "0" && 
+                {chosen.length == "0" ? 
                     <label>{emptyphrase}</label>
-                }
-                {chosen.map((ch,i)=>{
-                    {/* console.log(ch) */}
-                    return (
-                        <React.Fragment>
-                            <div>{ch[ckey]}</div>
-                            {chosen.length-1 != i && <div>,</div>}
-                        </React.Fragment>
+                    :
+                    (
+                        list.length == chosen.length ? 
+                        <div>{fullphrase}</div>
+                        :
+                        (
+                            chosen.map((ch,i)=>{
+                                {/* console.log(ch) */}
+                                return (
+                                    <React.Fragment>
+                                        <div>{ch[ckey]}</div>
+                                        {chosen.length-1 != i && <div>,</div>}
+                                    </React.Fragment>
+                                )
+                            })
+                        )
                     )
-                })}
+                }
+
             </TagCon>
             {
                 show &&
@@ -539,6 +550,7 @@ const DownloadReport = ({state}) => {
                 remove={onRemove}
                 num={3}
                 emptyphrase={"בחירת שכבת גיל"}
+                fullphrase={"כל השכבות"}
                 choseAll={choseAll}
                 removeAll={removeAll}
                 />

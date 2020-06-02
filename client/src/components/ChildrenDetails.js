@@ -121,7 +121,7 @@ export default class ChildrenDetails extends React.Component {
               hanaga: this.state.hanagaSearchRes,
               shevet: this.state.shevetSearchRes,
               age: this.state.age,
-              // madrich: this.state.nameOfMadrich 
+              madrich: this.state.nameOfMadrich 
           }
           // this.setState({
           //   data: {
