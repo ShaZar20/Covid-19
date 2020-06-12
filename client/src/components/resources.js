@@ -25,7 +25,7 @@ export const tribes = [
     {'hanaga': 'דן', 'shevet': 'און','code':'nZuMzI'}, 
     {'hanaga': 'דן', 'shevet': 'ברק','code':'4afxOa'}, 
     {'hanaga': 'דן', 'shevet': 'גבעתיים','code':'pnZO4m'}, 
-    {'hanaga': 'דן', 'shevet': 'גלעד','code':'PRymY5'}, 
+    {'hanaga': 'דן', 'shevet': 'גילעד','code':'PRymY5'}, 
     {'hanaga': 'דן', 'shevet': 'גנים','code':'Bq8SGp'}, 
     {'hanaga': 'דן', 'shevet': 'דור','code':'PCBJd6'}, 
     {'hanaga': 'דן', 'shevet': 'המושבה','code':'bRAaUv'}, 

@@ -9,7 +9,46 @@ router.post('/master',(req,res)=>{
     console.log(req.body)
     try{
         let query = {date:req.body.data.date,hanaga:{$in:req.body.data.bigUnits},gil:{$in:req.body.data.age}}
-        Forms.find(query,(err,doc)=>{
+        Forms.aggregate([
+            {
+                $match:query
+            },
+            {
+                $group:{
+                    _id:'$childId',
+                    "childName":{
+                        $first:"$childName"
+                    },
+                    "childId":{
+                        $first:"$childId"
+                    },
+                    "hanaga":{
+                        $first:"$hanaga"
+                    },
+                    "shevet":{
+                        $first:"$shevet"
+                    },
+                    "gil":{
+                        $first:"$gil"
+                    },
+                    "guideName":{
+                        $first:"$guideName"
+                    },
+                    "parentName":{
+                        $first:"$parentName"
+                    },
+                    "parentId":{
+                        $first:"$parentId"
+                    },
+                    "validator":{
+                        $first:"$validator"
+                    },
+                    "date":{
+                        $first:"$date"
+                    }
+                }
+            }
+        ],(err,doc)=>{
             if(err){
                 console.log(err)
                 res.send(err)
@@ -34,7 +73,46 @@ router.post('/basic',(req,res)=>{
             hanaga:{$in:req.body.data.bigUnits},
             gil:{$in:req.body.data.age}
         }
-        Forms.find(query,(err,doc)=>{
+        Forms.aggregate([
+            {
+                $match:query
+            },
+            {
+                $group:{
+                    _id:'$childId',
+                    "childName":{
+                        $first:"$childName"
+                    },
+                    "childId":{
+                        $first:"$childId"
+                    },
+                    "hanaga":{
+                        $first:"$hanaga"
+                    },
+                    "shevet":{
+                        $first:"$shevet"
+                    },
+                    "gil":{
+                        $first:"$gil"
+                    },
+                    "guideName":{
+                        $first:"$guideName"
+                    },
+                    "parentName":{
+                        $first:"$parentName"
+                    },
+                    "parentId":{
+                        $first:"$parentId"
+                    },
+                    "validator":{
+                        $first:"$validator"
+                    },
+                    "date":{
+                        $first:"$date"
+                    }
+                }
+            }
+        ],(err,doc)=>{
             if(err){
                 console.log(err)
                 res.send(err)
@@ -43,6 +121,15 @@ router.post('/basic',(req,res)=>{
                 res.send(doc)
             }
         })
+        // Forms.find(query,(err,doc)=>{
+        //     if(err){
+        //         console.log(err)
+        //         res.send(err)
+        //     }else{
+        //         // console.log(doc)
+        //         res.send(doc)
+        //     }
+        // })
     }
     catch(err){
 
@@ -59,7 +146,46 @@ router.post('/prem',(req,res)=>{
             hanaga:{$in:req.body.data.bigUnits},
             gil:{$in:req.body.data.age}
         }
-        Forms.find(query,(err,doc)=>{
+        Forms.aggregate([
+            {
+                $match:query
+            },
+            {
+                $group:{
+                    _id:'$childId',
+                    "childName":{
+                        $first:"$childName"
+                    },
+                    "childId":{
+                        $first:"$childId"
+                    },
+                    "hanaga":{
+                        $first:"$hanaga"
+                    },
+                    "shevet":{
+                        $first:"$shevet"
+                    },
+                    "gil":{
+                        $first:"$gil"
+                    },
+                    "guideName":{
+                        $first:"$guideName"
+                    },
+                    "parentName":{
+                        $first:"$parentName"
+                    },
+                    "parentId":{
+                        $first:"$parentId"
+                    },
+                    "validator":{
+                        $first:"$validator"
+                    },
+                    "date":{
+                        $first:"$date"
+                    }
+                }
+            }
+        ],(err,doc)=>{
             if(err){
                 console.log(err)
                 res.send(err)

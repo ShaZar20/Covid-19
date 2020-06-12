@@ -34,7 +34,7 @@ const Approved = ({name,setChild,setParent,setStep,url}) => {
                 <div>{date.format("LLLL")}</div>
                 <div className="spacer-column" />
                 <SendViaWhatsappButton url={url}/>
-                <DownloadButton />
+                {/* <DownloadButton /> */}
                 <div className="spacer-column" />
                 <div className="text-paragraph">ניפגש בשבט,</div>
                 <div className="text-paragraph">חזק ואמץ!</div>
