@@ -15,7 +15,7 @@ const Switcher = (step,setStep,setChild,setParent,url,stateChild,Submitting) => 
         case 1:
             return <ParentDetails setParent={setParent} submit={Submitting} setStep={setStep}/>
         case 2:
-            return <Approved name={stateChild.nameOfChild} url={url} setStep={setStep} setChild={setChild} setParent={setParent}/>
+            return <Approved name={stateChild.nameOfChild} state={stateChild} url={url} setStep={setStep} setChild={setChild} setParent={setParent}/>
     }
 }
 

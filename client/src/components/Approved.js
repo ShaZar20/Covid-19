@@ -20,7 +20,7 @@ const Label = ({text}) => {
     )
 }
 
-const Approved = ({name,setChild,setParent,setStep,url}) => {
+const Approved = ({name,setChild,setParent,setStep,url,state}) => {
     const date = moment()
     // console.log(name)
     // name = "tchr acd"
@@ -34,7 +34,7 @@ const Approved = ({name,setChild,setParent,setStep,url}) => {
                 <div>{date.format("LLLL")}</div>
                 <div className="spacer-column" />
                 <SendViaWhatsappButton url={url}/>
-                {/* <DownloadButton /> */}
+                <DownloadButton />
                 <div className="spacer-column" />
                 <div className="text-paragraph">ניפגש בשבט,</div>
                 <div className="text-paragraph">חזק ואמץ!</div>
@@ -62,6 +62,11 @@ const Approved = ({name,setChild,setParent,setStep,url}) => {
                                     )
                                 })
                             }
+                        </div>
+                        <div>
+                            <Label text={state.hanaga +" , "}/>
+                            <Label text={state.shevet+" , "}/>
+                            <Label text={state.gil}/>
                         </div>
                         <div >
                             <Label text={date.format("DD/MM/YYYY")}/>

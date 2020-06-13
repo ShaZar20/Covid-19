@@ -4,10 +4,16 @@ import html2canvas from 'html2canvas'
 import {  WhatsappShareButton } from 'react-share'
 
 function saveAs(uri,filename){
+    // var reader = new FileReader()
+    // var out = new Blob([uri],{type:'image/png'});
+    // reader.onload = function(e){
+    //     window.location.href = reader.result
+    // }
+    // reader.readAsDataURL(out)
     var link = document.createElement('a')
     if(typeof link.download === 'string'){
 
-        link.href = uri
+        link.href = uri 
         link.download = filename
 
         document.body.appendChild(link);
